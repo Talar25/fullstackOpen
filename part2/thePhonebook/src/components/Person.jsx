@@ -1,7 +1,10 @@
-export function Person({ name, number }) {
+export function Person({ name, number, handleDelete }) {
   return (
-    <p>
-      {name} {number}
-    </p>
+    <div>
+      <span>
+        {name} {number}
+      </span>
+      <button onClick={handleDelete}>delete</button>
+    </div>
   );
 }

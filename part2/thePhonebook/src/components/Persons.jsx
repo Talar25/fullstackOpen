@@ -1,6 +1,6 @@
 import { Person } from "./Person";
 
-export function Persons({ persons, filter }) {
+export function Persons({ persons, filter, handleDelete }) {
   return (
     <>
       {persons
@@ -12,6 +12,7 @@ export function Persons({ persons, filter }) {
             key={person.name}
             name={person.name}
             number={person.number}
+            handleDelete={() => handleDelete(person)}
           ></Person>
         ))}
     </>
