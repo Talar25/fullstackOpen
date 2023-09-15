@@ -55,26 +55,28 @@ const App = () => {
     }
 
     if (!checked)
-      personService
-        .create(newPerson)
-        .then((returnedPerson) => {
-          setPersons([...persons, returnedPerson]);
-          setNewName("");
-          setNewNumber("");
+      if (newPerson.name.length < 3) {
+        return alert("Name is too short!");
+      }
 
-          setErrorMessage(`Added ${newPerson.name}`);
-          setTimeout(() => {
-            setErrorMessage(null);
-          }, 5000);
-        })
-        .catch((err) => {
-          setErrorMessage(
-            `${newPerson.name} has already been added to the server`
-          );
-          setTimeout(() => {
-            setErrorMessage(null);
-          }, 5000);
-        });
+    personService
+      .create(newPerson)
+      .then((returnedPerson) => {
+        setPersons([...persons, returnedPerson]);
+        setNewName("");
+        setNewNumber("");
+
+        setErrorMessage(`Added ${newPerson.name}`);
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
+      })
+      .catch((error) => {
+        setErrorMessage(error.response.data.error);
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
+      });
   }
 
   function handleDelete(person) {
