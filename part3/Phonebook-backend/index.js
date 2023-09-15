@@ -36,28 +36,6 @@ const errorHandler = (error, request, response, next) => {
   next(error);
 };
 
-// let persons = [
-//   {
-//     id: 1,
-//     name: "Arto Hellas",
-//     number: "040-123456",
-//   },
-//   {
-//     id: 2,
-//     name: "Ada Lovelace",
-//     number: "39-44-5323523",
-//   },
-//   {
-//     id: 3,
-//     name: "Dan Abramov",
-//     number: "12-43-234345",
-//   },
-//   {
-//     id: 4,
-//     name: "Mary Poppendieck",
-//     number: "39-23-6423122",
-//   },
-// ];
 app.get("/info", (request, response) => {
   response.send(`<p>Phonebook has info for 2 persons</p>
   <p>${new Date()}</p>`);
@@ -111,7 +89,7 @@ const postMorgan = app.post("/api/persons", (request, response, next) => {
 
 app.delete("/api/persons/:id", (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then((result) => {
+    .then(() => {
       response.status(204).end();
     })
     .catch((error) => next(error));
