@@ -1,9 +1,16 @@
+import { useNotification } from '../NotificationContext'
+
 const AnecdoteForm = ({ newAnecdoteMutation }) => {
+  const { createAnecdoteNotification, errorLengthNotification } =
+    useNotification()
   const onCreate = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
-    event.target.anecdote.value = ''
-    newAnecdoteMutation.mutate({ content, votes: 0 })
+    if (content.length > 5) {
+      event.target.anecdote.value = ''
+      newAnecdoteMutation.mutate({ content, votes: 0 })
+      createAnecdoteNotification(content)
+    } else errorLengthNotification()
   }
 
   return (
