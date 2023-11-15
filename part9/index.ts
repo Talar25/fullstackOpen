@@ -1,5 +1,6 @@
 import express from 'express'
 import calculateBmi from './bmiCalculator'
+import { calculateExercises } from './exerciseCalculator'
 const app = express()
 
 app.get('/hello', (_req, res) => {
@@ -21,6 +22,30 @@ app.get('/bmi', (req, res) => {
     bmi,
   }
   res.send(object)
+})
+
+app.get('/exercises', (req, res) => {
+  const { target, dailyExercises } = req.body
+
+  if (!target || !dailyExercises) {
+    res.status(400).send({ error: 'parameters missing' })
+  }
+
+  if (isNaN(target) || dailyExercises.some(isNaN)) {
+    res.status(400).send({ error: 'malformatted parameters' })
+  }
+
+  try {
+    const result = calculateExercises(target, dailyExercises)
+
+    res.send({ result }).status(200)
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).send({ error: error.message })
+    }
+
+    res.status(400).send({ error: 'something went wrong' })
+  }
 })
 
 const PORT = 3003

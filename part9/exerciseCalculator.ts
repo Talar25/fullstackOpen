@@ -33,7 +33,7 @@ type Return = {
   average: number
 }
 
-function calculateExercises(
+export function calculateExercises(
   targetAmount: number,
   dailyExercise: number[]
 ): Return {
