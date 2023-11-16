@@ -1,3 +1,5 @@
 export const Total = ({ totalExercises }: { totalExercises: number }) => {
-  return <p>Number of exercises {totalExercises}</p>;
+  return (
+    <p style={{ paddingTop: '10px' }}>Number of exercises {totalExercises}</p>
+  );
 };
