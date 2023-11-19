@@ -3,8 +3,10 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import patientService from '../../services/patients';
 import diagnosesService from '../../services/diagnoses';
-import { Diagnosis, Patient } from '../../types';
-import { Link } from 'react-router-dom';
+import { Diagnosis, Entry, Patient } from '../../types';
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import CottageIcon from '@mui/icons-material/Cottage';
+import { Icon } from '@mui/material';
 
 const OnePatientPage = () => {
   const [patient, setPatient] = useState<Patient | null>(null);
@@ -29,8 +31,11 @@ const OnePatientPage = () => {
     void fetchDiagnoses();
   }, []);
 
-  const findDiagnose = (codeArg: string) =>
-    diagnoses?.find((diagnose) => diagnose.code === codeArg);
+  const findDiagnose = (codeArg: string) => {
+    const code = diagnoses?.find((diagnose) => diagnose.code === codeArg);
+    if (code === null) return;
+    return <span>{code?.name}</span>;
+  };
 
   return (
     <Container>
@@ -53,7 +58,11 @@ const OnePatientPage = () => {
             </p>
             <ul>
               {entry.diagnosisCodes?.map((code) => (
-                <li key={code}>{code}</li>
+                <li key={code}>
+                  <p>
+                    {code} {findDiagnose(code)}
+                  </p>
+                </li>
               ))}
             </ul>
           </div>
@@ -64,3 +73,69 @@ const OnePatientPage = () => {
 };
 
 export default OnePatientPage;
+
+const EntryDetails = (entry: Entry, diagnoses: Diagnosis[]) => {
+  switch (entry.type) {
+    case 'Hospital':
+      return <HospitalEntry entry={entry} />;
+
+    case 'HealthCheck':
+      return <h1>hospital</h1>;
+
+    case 'OccupationalHealthcare':
+      return <h1>hospital</h1>;
+
+    default:
+      return;
+  }
+};
+
+// const HospitalEntry = (entry: Entry, diagnoses: Diagnosis[]) => {
+//   const findDiagnose = (codeArg: string) => {
+//     const code = diagnoses?.find((diagnose) => diagnose.code === codeArg);
+//     if (code === null) return;
+//     return <span>{code?.name}</span>;
+//   };
+//   return (
+//     <div style={{ border: '1px solid black', borderRadius: '10px' }}>
+//       <p>
+//         {entry.date} {entry.description} <Icon>LocalHospitalIcon</Icon>
+//       </p>
+//       <ul>
+//         {entry.diagnosisCodes?.map((code) => (
+//           <li key={code}>
+//             <p>
+//               {code} {findDiagnose(code)}
+//             </p>
+//           </li>
+//         ))}
+//       </ul>
+//       <p>diagnose by {entry.specialist}</p>
+//     </div>
+//   );
+// };
+
+// const OccupationEntry = (entry: Entry, diagnoses: Diagnosis[]) => {
+//   const findDiagnose = (codeArg: string) => {
+//     const code = diagnoses?.find((diagnose) => diagnose.code === codeArg);
+//     if (code === null) return;
+//     return <span>{code?.name}</span>;
+//   };
+//   return (
+//     <div style={{ border: '1px solid black', borderRadius: '10px' }}>
+//       <p>
+//         {entry.date} {entry.description} <Icon>{CottageIcon}</Icon>
+//       </p>
+//       <ul>
+//         {entry.diagnosisCodes?.map((code) => (
+//           <li key={code}>
+//             <p>
+//               {code} {findDiagnose(code)}
+//             </p>
+//           </li>
+//         ))}
+//       </ul>
+//       <p>diagnose by {entry.specialist}</p>
+//     </div>
+//   );
+// };
